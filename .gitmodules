@@ -1,3 +1,6 @@
 [submodule "MetaTrader5-Docker-Image"]
 	path = MetaTrader5-Docker-Image
 	url = https://github.com/shreyash99ramtekkar/MetaTrader5-Docker-Image.git
+[submodule "forex-pattern-recognition"]
+	path = forex-pattern-recognition
+	url = https://github.com/shreyash99ramtekkar/forex-pattern-recognition.git
