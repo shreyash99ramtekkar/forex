@@ -4,3 +4,9 @@
 [submodule "forex-pattern-recognition"]
 	path = forex-pattern-recognition
 	url = https://github.com/shreyash99ramtekkar/forex-pattern-recognition.git
+[submodule "data-broker"]
+	path = data-broker
+	url = git@github.com:shreyash99ramtekkar/data-broker.git
+[submodule "forex-telegram-trade"]
+	path = forex-telegram-trade
+	url = https://github.com/shreyash99ramtekkar/forex-telegram-trade.git
