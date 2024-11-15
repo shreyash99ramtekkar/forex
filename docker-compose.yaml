@@ -1,0 +1,34 @@
+services:
+  mt5:
+    build: .
+    # image: gmag11/metatrader5_vnc
+    image: sramtekkar/metatrader5
+    container_name: mt5
+    volumes:
+      - ./MetaTrader5-Docker-Image/config:/config
+    ports:
+      - 3000:3000
+      - 8001:8001
+    networks:
+      - app_network
+    env_file:
+      - ./MetaTrader5-Docker-Image/.env
+  app:
+      build:
+        context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
+      volumes:
+        - /var/log/applog/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
+      environment:
+        - MT5_SERVER=mt5  # Pass MT5 host from .env or environment variables
+      depends_on: 
+        - mt5
+      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5:8001 -- python main.py"
+      networks:
+        - app_network
+
+volumes:
+  app_logs:  # Named volume for the logs
+
+networks:
+  app_network:  # Custom network to enable communication between containers
+    driver: bridge  # Use bridge network driver for communication
