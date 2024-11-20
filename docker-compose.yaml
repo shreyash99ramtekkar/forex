@@ -22,7 +22,7 @@ services:
         - MT5_SERVER=mt5  # Pass MT5 host from .env or environment variables
       depends_on: 
         - mt5
-      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5:8001 -t 300-- python main.py"
+      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5:8001 -t 300 -- python main.py"
       networks:
         - app_network
 
