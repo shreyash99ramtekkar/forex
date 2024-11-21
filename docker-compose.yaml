@@ -1,34 +1,29 @@
 services:
-  mt5:
-    build: .
-    # image: gmag11/metatrader5_vnc
-    image: sramtekkar/metatrader5
-    container_name: mt5
-    volumes:
-      - ./MetaTrader5-Docker-Image/config:/config
+  mt5-test:
+    build: ./MetaTrader5-Docker-Image/.
+    container_name: mt5-test
     ports:
-      - 3000:3000
-      - 8001:8001
+      - 3020:3000
+      - 8020:8001
     networks:
-      - app_network
-    env_file:
-      - ./MetaTrader5-Docker-Image/.env
-  app:
+      - app_network_test
+  app-test:
       build:
         context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
+      container_name: telegram-app-test
       volumes:
-        - /var/log/applog/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
+        - /var/log/applog/test/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
       environment:
-        - MT5_SERVER=mt5  # Pass MT5 host from .env or environment variables
+        - MT5_SERVER=mt5-test  # Pass MT5 host from .env or environment variables
       depends_on: 
-        - mt5
-      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5:8001 -t 300-- python main.py"
+        - mt5-test
+      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-test:8001 -t 300 -- python main.py"
       networks:
-        - app_network
+        - app_network_test
 
 volumes:
   app_logs:  # Named volume for the logs
 
 networks:
-  app_network:  # Custom network to enable communication between containers
+  app_network_test:  # Custom network to enable communication between containers
     driver: bridge  # Use bridge network driver for communication
