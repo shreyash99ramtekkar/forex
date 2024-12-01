@@ -10,7 +10,7 @@ services:
 
   db-test:
     image: mysql
-    container_name: forex-db
+    container_name: forex-test-db
     restart: always
     volumes:
       - /opt/docker-data/test/mysql:/var/lib/mysql
@@ -27,7 +27,7 @@ services:
         - /var/log/applog/test/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
       environment:
         - MT5_SERVER=mt5-test  # Pass MT5 host from .env or environment variables
-        - DB_HOST=forex-db
+        - DB_HOST=forex-test-db
       depends_on: 
         - mt5-test
         - db-test
