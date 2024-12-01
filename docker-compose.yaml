@@ -7,6 +7,18 @@ services:
       - 8010:8001
     networks:
       - app_network_dev
+
+  db-dev:
+    image: mysql
+    container_name: forex-db
+    restart: always
+    volumes:
+      - /opt/docker-data/dev/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty123
+    networks:
+      - app_network_dev
+
   app-dev:
       build:
         context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
@@ -15,8 +27,10 @@ services:
         - /var/log/applog/dev/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
       environment:
         - MT5_SERVER=mt5-dev  # Pass MT5 host from .env or environment variables
+        - DB_HOST=forex-db
       depends_on: 
         - mt5-dev
+        - db-dev
       entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-dev:8001 -t 300 -- python main.py"
       networks:
         - app_network_dev
