@@ -30,7 +30,7 @@ services:
         - DB_HOST=forex-test-db
       depends_on: 
         - mt5-test
-        - forex-test-db
+        - db-test
       entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-test:8001 -t 300 -- python main.py"
       networks:
         - app_network_test
