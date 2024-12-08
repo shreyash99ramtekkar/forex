@@ -30,7 +30,7 @@ services:
         - DB_HOST=forex-dev-db
       depends_on: 
         - mt5-dev
-        - forex-dev-db
+        - db-dev
       entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-dev:8001 -t 300 -- python main.py"
       networks:
         - app_network_dev
