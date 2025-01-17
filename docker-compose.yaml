@@ -1,6 +1,7 @@
 services:
   mt5-dev:
-    build: ./MetaTrader5-Docker-Image/.
+    # build: ./MetaTrader5-Docker-Image/.
+    image: gmag11/metatrader5_vnc
     container_name: mt5-dev
     ports:
       - 3010:3000
@@ -19,21 +20,39 @@ services:
     networks:
       - app_network_dev
 
-  app-dev:
-      build:
-        context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
-      container_name: telegram-app-dev
-      volumes:
-        - /var/log/applog/dev/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
-      environment:
-        - MT5_SERVER=mt5-dev  # Pass MT5 host from .env or environment variables
-        - DB_HOST=forex-dev-db
-      depends_on: 
+  mt5-api-dev:
+    build: 
+      context: ./MT5-API/.
+    container_name: mt5-api-dev
+    volumes:
+      - /var/log/applog/dev/:/app/logs/
+    environment:
+      - MT5_SERVER=mt5-dev  # Pass MT5 host from .env or environment variables
+      - DB_HOST=forex-dev-db
+    depends_on:
         - mt5-dev
         - db-dev
-      entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-dev:8001 -t 300 -- python main.py"
-      networks:
-        - app_network_dev
+    ports: 
+        - 5001:5000
+    entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-dev:8001 -t 300 -- python app.py"
+    networks:
+      - app_network_dev
+
+
+  app-dev:
+    build:
+      context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
+    container_name: telegram-app-dev
+    volumes:
+      - /var/log/applog/dev/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
+    environment:
+      - MT5-API-SERVER=mt5-api-dev
+    depends_on: 
+      - mt5-api-dev
+    # entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-dev:8001 -t 300 -- python main.py"
+    entrypoint: python main.py
+    networks:
+      - app_network_dev
 
 volumes:
   app_logs:  # Named volume for the logs
