@@ -10,3 +10,6 @@
 [submodule "forex-telegram-trade"]
 	path = forex-telegram-trade
 	url = https://github.com/shreyash99ramtekkar/forex-telegram-trade.git
+[submodule "MT5-API"]
+	path = MT5-API
+	url = git@github.com:shreyash99ramtekkar/MT5-API.git
