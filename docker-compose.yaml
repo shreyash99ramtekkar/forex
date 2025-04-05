@@ -54,6 +54,15 @@ services:
     networks:
       - app_network_test
 
+  grafana-test:
+    image: grafana/grafana
+    container_name: grafana-test
+    restart: unless-stopped
+    ports:
+     - '3021:3000'
+    networks:
+      - app_network_test
+
 volumes:
   app_logs:  # Named volume for the logs
 
