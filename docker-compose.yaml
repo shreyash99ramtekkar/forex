@@ -53,6 +53,16 @@ services:
     entrypoint: python main.py
     networks:
       - app_network_prod
+
+  grafana-prod:
+    image: grafana/grafana
+    container_name: grafana-prod
+    restart: unless-stopped
+    ports:
+     - '3031:3000'
+    networks:
+      - app_network_prod
+
 volumes:
   app_logs:  # Named volume for the logs
 
