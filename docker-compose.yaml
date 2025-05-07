@@ -54,6 +54,15 @@ services:
     networks:
       - app_network_dev
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    networks:
+      - app_network_dev
+
 volumes:
   app_logs:  # Named volume for the logs
 

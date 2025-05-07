@@ -1,15 +1,15 @@
 [submodule "MetaTrader5-Docker-Image"]
 	path = MetaTrader5-Docker-Image
-	url = https://github.com/shreyash99ramtekkar/MetaTrader5-Docker-Image.git
+	url = git@github.com:shreyash99ramtekkar/MetaTrader5-Docker-Image.git
 [submodule "forex-pattern-recognition"]
 	path = forex-pattern-recognition
-	url = https://github.com/shreyash99ramtekkar/forex-pattern-recognition.git
+	url = git@github.com:shreyash99ramtekkar/forex-pattern-recognition.git
 [submodule "data-broker"]
 	path = data-broker
 	url = git@github.com:shreyash99ramtekkar/data-broker.git
 [submodule "forex-telegram-trade"]
 	path = forex-telegram-trade
-	url = https://github.com/shreyash99ramtekkar/forex-telegram-trade.git
+	url = git@github.com:shreyash99ramtekkar/forex-telegram-trade.git
 [submodule "MT5-API"]
 	path = MT5-API
 	url = git@github.com:shreyash99ramtekkar/MT5-API.git
