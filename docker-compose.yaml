@@ -1,71 +1,71 @@
 services:
-  mt5-test:
+  mt5-preprod:
     # build: ./MetaTrader5-Docker-Image/.
     image: gmag11/metatrader5_vnc
-    container_name: mt5-test
+    container_name: mt5-preprod
     ports:
-      - 3020:3000
-      - 8020:8001
+      - 3040:3000
+      - 8040:8001
     networks:
-      - app_network_test
+      - app_network_preprod
 
-  db-test:
+  db-preprod:
     image: mysql
-    container_name: forex-test-db
+    container_name: forex-preprod-db
     restart: always
     volumes:
-      - /opt/docker-data/test/mysql:/var/lib/mysql
+      - /opt/docker-data/preprod/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: qwerty123
     networks:
-      - app_network_test
+      - app_network_preprod
 
-  mt5-api-test:
+  mt5-api-preprod:
     build: 
       context: ./MT5-API/.
-    container_name: mt5-api-test
+    container_name: mt5-api-preprod
     volumes:
-      - /var/log/applog/test/:/app/logs/
+      - /var/log/applog/preprod/:/app/logs/
     environment:
-      - MT5_SERVER=mt5-test  # Pass MT5 host from .env or environment variables
-      - DB_HOST=forex-test-db
+      - MT5_SERVER=mt5-preprod  # Pass MT5 host from .env or environment variables
+      - DB_HOST=forex-preprod-db
     depends_on:
-        - mt5-test
-        - db-test
+        - mt5-preprod
+        - db-preprod
     ports: 
-        - 5001:5000
-    entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-test:8001 -t 300 -- python app.py"
+        - 5040:5000
+    entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-preprod:8001 -t 300 -- python app.py"
     networks:
-      - app_network_test
+      - app_network_preprod
 
 
-  app-test:
+  app-preprod:
     build:
       context: ./forex-telegram-trade/.  # Build the image using the Dockerfile in the current directory
-    container_name: telegram-app-test
+    container_name: telegram-app-preprod
     volumes:
-      - /var/log/applog/test/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
+      - /var/log/applog/preprod/:/app/logs/  # Mount host directory /var/log/applog to /app/logs for logs
     environment:
-      - MT5-API-SERVER=mt5-api-test
+      - MT5-API-SERVER=mt5-api-preprod
     depends_on: 
-      - mt5-api-test
-    # entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-test:8001 -t 300 -- python main.py"
+      - mt5-api-preprod
+    # entrypoint: /bin/bash -c "/app/wait-for-it.sh mt5-preprod:8001 -t 300 -- python main.py"
     entrypoint: python main.py
     networks:
-      - app_network_test
+      - app_network_preprod
 
-  grafana-test:
+  grafana-preprod:
     image: grafana/grafana
-    container_name: grafana-test
+    container_name: grafana-preprod
     restart: unless-stopped
     ports:
-     - '3021:3000'
+     - '3041:3000'
     networks:
-      - app_network_test
+      - app_network_preprod
 
 volumes:
   app_logs:  # Named volume for the logs
 
 networks:
-  app_network_test:  # Custom network to enable communication between containers
+  app_network_preprod:  # Custom network to enable communication between containers
     driver: bridge  # Use bridge network driver for communication
